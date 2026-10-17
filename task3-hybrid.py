@@ -1,9 +1,15 @@
-#import cryptography
-#import rsa
-#import pycryptodome
-#import pycryoptodomex
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 import os
 import os.path
+from os import urandom
+ 
+
+
+BASE=os.path.dirname(os.path.abspath(__file__))
+txt = open(os.path.join(BASE, 'import', 'task2.txt'), 'r').read()
+print(f"Reading from file: {txt}")
 
 
 stuNumber = 4003110
@@ -41,6 +47,3 @@ print(f"Verification")
 print(f"M'' = {s}^{e} mod {n}")
 print(f"M'' = {stuNumberVerified}")
 
-BASE=os.path.dirname(os.path.abspath(__file__))
-txt = open(os.path.join(BASE, 'import', 'task2.txt'), 'r').read()
-print(f"Reading from file: {txt}")
