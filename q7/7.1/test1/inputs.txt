@@ -1,5 +1,7 @@
+normal conditions
+
 Original plaintext: HELLO
-First name: Jack
+First name: Jasanjot
 Last name: Singh
 Student ID: 4093354
 First prime: 4093367

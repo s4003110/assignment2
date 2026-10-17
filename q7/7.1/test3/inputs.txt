@@ -1,5 +1,8 @@
+changed first name completely
+
+
 Original plaintext: HELLO
-First name: Jasanjot
+First name: Kyle
 Last name: Singh
 Student ID: 4093354
 First prime: 4093367
