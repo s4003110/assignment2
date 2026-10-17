@@ -1,3 +1,6 @@
+changed first name but starts with same initial
+
+
 Original plaintext: HELLO
 First name: Jack
 Last name: Singh
