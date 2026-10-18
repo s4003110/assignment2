@@ -52,5 +52,10 @@ def main():
     aes.update(initials.encode("ascii"))
     encrypted, tag = aes.encrypt_and_digest(message.encode("utf-8"))
 
+    rsa_cipher = PKCS1_OAEP.new(
+          private_key.public_key(), hashAlgo=SHA256
+    )
+    protected_key = rsa_cipher.encrypt(aes_key)
 
+    
 
