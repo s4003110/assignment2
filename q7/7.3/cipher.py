@@ -45,3 +45,12 @@ def main():
 
     d = pow(e,-1,phi)
     private_key = RSA.construct((p*q, e, d, p, q))
+
+    intials = (first[0] + last[0]).upper()
+    aes_key = get_random_bytes(32)
+    aes = AES.new(aes_key, AES.MODE_GCM)
+    aes.update(initials.encode("ascii"))
+    encrypted, tag = aes.encrypt_and_digest(message.encode("utf-8"))
+
+
+
