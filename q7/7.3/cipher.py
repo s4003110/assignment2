@@ -65,6 +65,30 @@ def main():
     check.update(initials.encode("ascii"))
     assert check.decrypt_and_verify(encrypted, tag).decode() == message
 
-    
+    (BASE / "key.txt").write_text(
+        f"({e}, {p * q})", encoding="utf-8"
+    )
+
+    data = {
+        "initials": initials,
+        "encrypted_key": protected_key.hex(),
+        "nonce": aes.nonce.hex(),
+        "tag": tag.hex(),
+        "ciphertext": encrypted.hex()
+    }
+    (BASE / "cipher.txt").write_text(
+        json.dumps(data, indent=2), encoding="utf-8"
+    )
+
+    (BASE / "private_key.pem").write_bytes(private_key.export_key())
+
+    print("Created key.txt and cipher.txt.")
+    print("Decryption check passed. Keep private_key.pem secret.")
+
+
+try:
+    main()
+except ValueError as error:
+    print("Error:", error)
 
 
