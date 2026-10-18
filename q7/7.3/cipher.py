@@ -57,5 +57,14 @@ def main():
     )
     protected_key = rsa_cipher.encrypt(aes_key)
 
+    recovered_key = PKCS1_OAEP.new(
+          private_key, hashAlgo=SHA256
+    ).decrypt(protected_key)
+
+    check = AES.new(recovered_key, AES.MODE_GCM, nonce=aes.nonce)
+    check.update(initials.encode("ascii"))
+    assert check.decrypt_and_verify(encrypted, tag).decode() == message
+
     
+
 
