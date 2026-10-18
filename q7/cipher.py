@@ -66,9 +66,12 @@ def main():
         "tag": tag.hex(),
         "ciphertext": encrypted.hex()
     }
-    (BASE/"cipher.txt").write_text(
-        json.dumps(data, indent=2), encoding="utf-8"
-    )
+    (BASE / "cipher.txt").write_text(
+    f"{int.from_bytes(protected_key, 'big')}\n"
+    f"{initials}\n"
+    + json.dumps(data),
+    encoding="utf-8"
+)
 
     (BASE/"private_key.pem").write_bytes(private_key.export_key())
 
