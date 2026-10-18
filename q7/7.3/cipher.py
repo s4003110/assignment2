@@ -1,5 +1,4 @@
 from pathlib import Path
-from math import gcd
 import json
 
 from Crypto.PublicKey import RSA
@@ -34,17 +33,7 @@ def main():
     if not isPrime(p) or not isPrime(q):
             raise ValueError("Both numbers must be prime.")
 
-    if min(p.bit_length(), q.bit_length()) < 1024:
-            raise ValueError("Use primers of at least 1024 bits each")
-
-    e = 65537
-    phi = (p-1) * (q-1)
-
-    if gcd(e, phi) != 1:
-          raise ValueError("These primers are unsuitable for exponent 65537")   
-
-    d = pow(e,-1,phi)
-    private_key = RSA.construct((p*q, e, d, p, q))
+    private_key = RSA.generate(2048)
 
     intials = (first[0] + last[0]).upper()
     aes_key = get_random_bytes(32)
@@ -66,8 +55,9 @@ def main():
     assert check.decrypt_and_verify(encrypted, tag).decode() == message
 
     (BASE / "key.txt").write_text(
-        f"({e}, {p * q})", encoding="utf-8"
-    )
+    f"({private_key.e}, {private_key.n})",
+    encoding="utf-8"
+)
 
     data = {
         "initials": initials,
