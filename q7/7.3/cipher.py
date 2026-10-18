@@ -35,7 +35,7 @@ def main():
 
     private_key = RSA.generate(2048)
 
-    intials = (first[0] + last[0]).upper()
+    initials = (first[0] + last[0]).upper()
     aes_key = get_random_bytes(32)
     aes = AES.new(aes_key, AES.MODE_GCM)
     aes.update(initials.encode("ascii"))
