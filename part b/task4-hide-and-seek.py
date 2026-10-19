@@ -1,13 +1,9 @@
-from cryptography.hazmat.primitives.asymmetric import padding as asym_padding
-from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import padding as sym_padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import os
 from os import urandom
 from PIL import Image
-
-
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 image_path   = os.path.join(BASE, 'input', 'kitty.jpg')
@@ -59,8 +55,7 @@ def encrypt_message(message):
 
     return enc_message, iv, symmetric_key
  
-
-def decode(tampimage, iv, encrypted_key) -> str:
+def decode(tampimage, iv, symmetric_key) -> str:
     image = Image.open(tampimage, 'r')
     imgdata = iter(image.getdata())
     data = bytearray()
@@ -74,17 +69,17 @@ def decode(tampimage, iv, encrypted_key) -> str:
             break
 
     data = bytes(data)
-    cipher = Cipher(algorithms.AES(encrypted_key), modes.CFB(iv), backend=default_backend())
+    cipher = Cipher(algorithms.AES(symmetric_key), modes.CFB(iv), backend=default_backend())
     decryptor = cipher.decryptor()
     padded_data = decryptor.update(data) + decryptor.finalize()
     unpadder = sym_padding.PKCS7(algorithms.AES.block_size).unpadder()
     plaintext = unpadder.update(padded_data) + unpadder.finalize()
     return plaintext.decode('utf-8')
 
-
+# --- main program ---
 message = "This is a secret message."
 print("Original Message:", message)
-enc_message, iv, encrypted_key = encrypt_message(message)
+enc_message, iv, symmetric_key = encrypt_message(message)
 print("Encrypted Message:", enc_message)
 
 with open(image_path, 'rb') as f:
@@ -95,5 +90,5 @@ addencode(tampered_image, enc_message)
 tampered_image.save(output_path)
 print (f"The message : {message} has been hidden in the image : {image_path} and is now {tampered_image}.")
 
-decoded_message = decode(output_path, iv, encrypted_key)
+decoded_message = decode(output_path, iv, symmetric_key)
 print(f"Decoded Message: {decoded_message}")
